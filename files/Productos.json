@@ -1,0 +1,29 @@
+[
+	{
+		"title": "producto prueba II",
+		"description": "Este es un producto prueba II",
+		"price": 210,
+		"thumbnail": "Sin Foto",
+		"code": "abc123",
+		"stock": 25,
+		"id": 2
+	},
+	{
+		"title": "Este es un producto prueba VII",
+		"description": "Este es un producto prueba VII",
+		"price": 220,
+		"thumbnail": "sin Foto",
+		"code": "xyz9887",
+		"stock": 52,
+		"id": 3
+	},
+	{
+		"title": "producto prueba VI",
+		"description": "Este es un producto prueba VI",
+		"price": 220,
+		"thumbnail": "Sin Foto",
+		"code": "abc125",
+		"stock": 125,
+		"id": 6
+	}
+]

@@ -7,34 +7,32 @@ const start = async () => {
     console.log(productos);
 
     const producto = {
-        title: "producto prueba VII",
-        description: "Este es un producto prueba VII",
-        price: 210,
-        thumbnail: "Sin Foto",
-        code: "abc12",
-        stock: 12
+        title: "producto prueba",
+        description: "Este es un producto prueba",
+        price: 200,
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25
     };
 
-    //await productManager.addProducts(producto);
+    await productManager.addProducts(producto);
+    productos = await productManager.getProducts();
+    console.log(productos);
 
-    const productosActual = await productManager.getProducts();
-    console.log(productosActual);
-
-    const productoId = await productManager.getProductById(22);
+    const productoId = await productManager.getProductById(2);
     console.log(productoId);
 
     const productUpdate = {
-        title: "Este es un producto prueba VII",
-        description: "Este es un producto prueba VII",
+        title: "Este es un producto prueba",
+        description: "Este es un producto prueba",
         price: 220,
-        thumbnail: "sin Foto",
-        code: "xyz9887",
-        stock: 52
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25
     };
 
     await productManager.updateProduct(3,productUpdate);
-
-    await productManager.deleteProduct(5);
+    if (productos.length >3) await productManager.deleteProduct(1);
 
     productos = await productManager.getProducts();
     console.log(productos);

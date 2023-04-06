@@ -5,7 +5,7 @@ const app = express();
 
 const productManager = new ProductManager("./files/Productos.json");
 
-/* app.use(express.urlencoded({extended: true})); */
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/products", async (req, res) => {
     const limit = Number(req.query.limit);

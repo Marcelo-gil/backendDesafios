@@ -99,7 +99,7 @@ export default class ProductManager {
         const product = products.find((prod) => prod.id === idProduct);
 
         if (!product) {
-            console.log("Not found");
+            return {error: "Not found"};
         }
 
         return product;

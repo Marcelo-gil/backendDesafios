@@ -1,38 +1,92 @@
 [
 	{
-		"title": "producto prueba",
-		"description": "Este es un producto prueba",
-		"price": 200,
+		"title": "PAQUETE X 169 GRS.",
+		"description": "GALL. CRIOLLITAS MAS X 169 GRS.",
+		"price": 156,
 		"thumbnail": "Sin imagen",
-		"code": "abc123",
-		"stock": 25,
+		"code": "000137",
+		"stock": 15,
+		"id": 1
+	},
+	{
+		"title": "PAQUETE X 108 GRS.",
+		"description": "GALL. SONRISAS X 108 GRS.",
+		"price": 175,
+		"thumbnail": "Sin imagen",
+		"code": "000147",
+		"stock": 371,
 		"id": 2
 	},
 	{
-		"title": "Este es un producto prueba",
-		"description": "Este es un producto prueba",
-		"price": 220,
+		"title": "PAQUETE X 108 GRS.",
+		"description": "GALL. RUMBA X 108 GRS.",
+		"price": 192,
 		"thumbnail": "Sin imagen",
-		"code": "abc123",
+		"code": "000149",
 		"stock": 25,
 		"id": 3
 	},
 	{
-		"title": "producto prueba",
-		"description": "Este es un producto prueba",
-		"price": 200,
+		"title": "PAQUETE X 108 GRS.",
+		"description": "GALL. CHOCOLINAS X 150 GRS.",
+		"price": 245,
 		"thumbnail": "Sin imagen",
-		"code": "abc123",
-		"stock": 25,
+		"code": "000152",
+		"stock": 95,
 		"id": 4
 	},
 	{
-		"title": "producto prueba",
-		"description": "Este es un producto prueba",
-		"price": 200,
+		"title": "SURTIDO X 399 GRS.",
+		"description": "GALL. BAGLEY SURTIDO X 399 GRS.",
+		"price": 444,
 		"thumbnail": "Sin imagen",
-		"code": "abc123",
-		"stock": 25,
+		"code": "000160",
+		"stock": 111,
 		"id": 5
+	},
+	{
+		"title": "BOLSA CREMINO X 940 GRS.",
+		"description": "CARAM. ARCOR CREMINO SURT. X 940 GR",
+		"price": 1540,
+		"thumbnail": "Sin imagen",
+		"code": "000633",
+		"stock": 11,
+		"id": 6
+	},
+	{
+		"title": "BOLSA FRUTAL X 810 GRS.",
+		"description": "CARAM. ARCOR FRUTAL RELL. X 810",
+		"price": 1248,
+		"thumbnail": "Sin imagen",
+		"code": "000807",
+		"stock": 39,
+		"id": 7
+	},
+	{
+		"title": "BOLSA MENTA CRISTAL X 810 GRS.",
+		"description": "CARAM. ARCOR MENTA CRISTAL X 810",
+		"price": 1537,
+		"thumbnail": "Sin imagen",
+		"code": "000965",
+		"stock": 11,
+		"id": 8
+	},
+	{
+		"title": "BOLSA CHOCOMANI X 520 GRS.",
+		"description": "CARAM. ARCOR CHOCOMANI X 520 GRS.",
+		"price": 1397,
+		"thumbnail": "Sin imagen",
+		"code": "000973",
+		"stock": 19,
+		"id": 9
+	},
+	{
+		"title": "BOLSA MASTICABLES X 800 GRS.",
+		"description": "CARAM. MISKY MAST. X 800 GRS.",
+		"price": 725,
+		"thumbnail": "Sin imagen",
+		"code": "000230",
+		"stock": 175,
+		"id": 10
 	}
 ]

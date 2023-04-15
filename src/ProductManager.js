@@ -73,7 +73,7 @@ export default class ProductManager {
     };
 
     getProducts = async () => {
-        try {
+        try {            
             if (fs.existsSync(this.path)) {
                 const productsTxt = await fs.promises.readFile(
                     this.path,

@@ -152,27 +152,5 @@
 		"category": "ALFAJORES",
 		"status": true,
 		"id": 14
-	},
-	{
-		"title": "ALFAJORES DE CHOCOLATE",
-		"description": "ALFAJOR GUAYMALLEN DE CHOCOLATE 40 GRS caja",
-		"thumbnail": [],
-		"code": "000182",
-		"price": 1101.2,
-		"stock": 15,
-		"category": "ALFAJORES",
-		"status": true,
-		"id": 15
-	},
-	{
-		"title": "ALFAJORES DE CHOCOLATE",
-		"description": "ALFAJOR GUAYMALLEN DE CHOCOLATE 40 GRS caja",
-		"thumbnail": [],
-		"code": "001182",
-		"price": 1101.2,
-		"stock": 15,
-		"category": "ALFAJORES",
-		"id": 16,
-		"status": true
 	}
 ]

@@ -10,37 +10,51 @@ export default class ProductManager {
      * @param {*} product  Objeto del Producto
      * @returns True producto Invalido
      */
-    invalidProduct(product) {
-        if (
-            !product.title ||
-            !product.description ||
-            !product.code ||
-            product.price == undefined ||
-            product.stock == undefined ||
-            !product.category
-        ) {
-            throw new Error("producto invalido, faltan campos");
+    invalidProduct(product, origin) {
+        if (origin === "add") {
+            if (
+                !product.title ||
+                !product.description ||
+                !product.code ||
+                product.price == undefined ||
+                product.stock == undefined ||
+                !product.category
+            ) {
+                throw new Error("producto invalido, faltan campos");
+            }
         }
 
-        if (typeof product.status !== "boolean")
+        if (product.status !== undefined && typeof product.status !== "boolean")
             throw new Error("Estatus Invalido");
 
-        if (product.title.trim().length === 0)
+        if (product.title !== undefined && product.title.trim().length === 0)
             throw new Error("Debe Ingresar un Titulo");
 
-        if (product.description.trim().length === 0)
+        if (
+            product.description !== undefined &&
+            product.description.trim().length === 0
+        )
             throw new Error("Debe Ingresar la Descripción");
 
-        if (product.code.trim().length === 0)
+        if (product.code !== undefined && product.code.trim().length === 0)
             throw new Error("Debe Ingresar el Codigo");
 
-        if (isNaN(product.price) || product.price <= 0)
+        if (
+            (product.price !== undefined && isNaN(product.price)) ||
+            product.price <= 0
+        )
             throw new Error("Debe Ingresar un Precio Valido");
 
-        if (isNaN(product.stock) || product.stock <= 0)
+        if (
+            (product.stock !== undefined && isNaN(product.stock)) ||
+            product.stock <= 0
+        )
             throw new Error("El Stock debe ser mayor a Cero");
 
-        if (product.category.trim().length === 0)
+        if (
+            product.category !== undefined &&
+            product.category.trim().length === 0
+        )
             throw new Error("Debe Ingresar la categoria ");
     }
 
@@ -86,7 +100,7 @@ export default class ProductManager {
         if (product.status === undefined) {
             product.status = true;
         }
-        this.invalidProduct(product);
+        this.invalidProduct(product, "add");
 
         try {
             const products = await this.getProducts();
@@ -123,20 +137,32 @@ export default class ProductManager {
      * @returns
      */
     updateProduct = async (idProduct, productUpdate) => {
-        this.invalidProduct(productUpdate);
+        this.invalidProduct(productUpdate, "update");
 
         try {
             const products = await this.getProducts();
+
+            const existeCodigo = products.find(
+                (prod) =>
+                    prod.code === productUpdate.code && prod.id !== idProduct
+            );
+            if (existeCodigo) throw new Error("Ya existe el codigo");
+
             const product = products.find((prod) => prod.id === idProduct);
 
             if (product !== undefined) {
                 const indexProduct = products.indexOf(product);
-                const updatedProduct = { ...productUpdate, id: product.id };
+                const updatedProduct = {
+                    ...product,
+                    ...productUpdate,
+                    id: product.id,
+                };
                 products[indexProduct] = updatedProduct;
                 await fs.promises.writeFile(
                     this.path,
                     JSON.stringify(products, null, "\t")
                 );
+                return updatedProduct;
             } else {
                 throw new Error("Product Not found");
             }

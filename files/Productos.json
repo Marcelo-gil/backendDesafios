@@ -90,10 +90,10 @@
 	{
 		"title": "BOLSA CHOCOMANI X 520 GRS.",
 		"description": "CARAM. ARCOR CHOCOMANI X 520 GRS.",
-		"price": 1397,
+		"price": 1500,
 		"thumbnail": [],
 		"code": "000973",
-		"stock": 19,
+		"stock": 14,
 		"status": true,
 		"category": "CARAMELOS",
 		"id": 9
@@ -163,5 +163,16 @@
 		"category": "ALFAJORES",
 		"status": true,
 		"id": 15
+	},
+	{
+		"title": "ALFAJORES DE CHOCOLATE",
+		"description": "ALFAJOR GUAYMALLEN DE CHOCOLATE 40 GRS caja",
+		"thumbnail": [],
+		"code": "001182",
+		"price": 1101.2,
+		"stock": 15,
+		"category": "ALFAJORES",
+		"id": 16,
+		"status": true
 	}
 ]

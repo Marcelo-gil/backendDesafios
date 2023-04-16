@@ -11,47 +11,90 @@ export default class ProductManager {
      * @returns True producto Invalido
      */
     invalidProduct(product) {
-        if (product.title.trim().length === 0) {
-            console.log("Debe Ingresar Titulo");
-            return true;
+        if (
+            !product.title ||
+            !product.description ||
+            !product.code ||
+            product.price == undefined ||
+            product.stock == undefined ||
+            !product.category
+        ) {
+            throw new Error("producto invalido, faltan campos");
         }
 
-        if (product.description.trim().length === 0) {
-            console.log("Debe Ingresar Descripción");
-            return true;
-        }
+        if (typeof product.status !== "boolean")
+            throw new Error("Estatus Invalido");
 
-        if (product.thumbnail.trim().length === 0) {
-            console.log("Falta Imagen");
-            return true;
-        }
+        if (product.title.trim().length === 0)
+            throw new Error("Debe Ingresar un Titulo");
 
-        if (product.price === 0) {
-            console.log("Debe Ingresar el Precio");
-            return true;
-        }
-        if (product.stock === 0) {
-            console.log("Debe Ingresar el Stock");
-            return true;
-        }
+        if (product.description.trim().length === 0)
+            throw new Error("Debe Ingresar la Descripción");
 
-        if (product.code.trim().length === 0) {
-            console.log("Falta Codigo");
-            return true;
-        }
-        return false;
+        if (product.code.trim().length === 0)
+            throw new Error("Debe Ingresar el Codigo");
+
+        if (isNaN(product.price) || product.price <= 0)
+            throw new Error("Debe Ingresar un Precio Valido");
+
+        if (isNaN(product.stock) || product.stock <= 0)
+            throw new Error("El Stock debe ser mayor a Cero");
+
+        if (product.category.trim().length === 0)
+            throw new Error("Debe Ingresar la categoria ");
     }
 
+    getProducts = async () => {
+        try {
+            if (fs.existsSync(this.path)) {
+                const productsTxt = await fs.promises.readFile(
+                    this.path,
+                    "utf-8"
+                );
+                const products = JSON.parse(productsTxt);
+                return products;
+            } else {
+                return [];
+            }
+        } catch (error) {
+            throw error;
+        }
+    };
+
     /**
-     * Agrega un producto 
+     * Busca un Producto por Id
+     * @param {*} idProduct Id de Producto
+     * @returns Producto
+     */
+    getProductById = async (idProduct) => {
+        const products = await this.getProducts();
+        const product = products.find((prod) => prod.id === idProduct);
+
+        if (product === undefined) {
+            throw new Error("Product Not found");
+        }
+
+        return product;
+    };
+
+    /**
+     * Agrega un producto
      * @param {*} product Objeto del producto
-     * @returns 
+     * @returns
      */
     addProducts = async (product) => {
-        if (this.invalidProduct(product)) return;
+        if (product.status === undefined) {
+            product.status = true;
+        }
+        this.invalidProduct(product);
 
         try {
             const products = await this.getProducts();
+
+            const existeCodigo = products.find(
+                (prod) => prod.code === product.code
+            );
+            if (existeCodigo) throw new Error("Ya existe el codigo");
 
             if (products.length === 0) {
                 product.id = 1;
@@ -68,58 +111,25 @@ export default class ProductManager {
 
             return product;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
-    };
-
-    getProducts = async () => {
-        try {            
-            if (fs.existsSync(this.path)) {
-                const productsTxt = await fs.promises.readFile(
-                    this.path,
-                    "utf-8"
-                );
-                const products = JSON.parse(productsTxt);
-                return products;
-            } else {
-                return [];
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    /**
-     * Busca un Producto por Id
-     * @param {*} idProduct Id de Producto
-     * @returns Producto
-     */
-    getProductById = async (idProduct) => {
-        const products = await this.getProducts();
-        const product = products.find((prod) => prod.id === idProduct);
-
-        if (!product) {
-            return {error: "Not found"};
-        }
-
-        return product;
     };
 
     /**
      * Actualiza un producto
-     * 
+     *
      * @param {*} idProduct Id del producto
      * @param {*} productUpdate Producto a Acutualizar
-     * @returns 
+     * @returns
      */
     updateProduct = async (idProduct, productUpdate) => {
-        if (this.invalidProduct(productUpdate)) return;
+        this.invalidProduct(productUpdate);
 
         try {
             const products = await this.getProducts();
             const product = products.find((prod) => prod.id === idProduct);
 
-            if (product) {
+            if (product !== undefined) {
                 const indexProduct = products.indexOf(product);
                 const updatedProduct = { ...productUpdate, id: product.id };
                 products[indexProduct] = updatedProduct;
@@ -127,9 +137,11 @@ export default class ProductManager {
                     this.path,
                     JSON.stringify(products, null, "\t")
                 );
+            } else {
+                throw new Error("Product Not found");
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 
@@ -141,7 +153,7 @@ export default class ProductManager {
         try {
             const products = await this.getProducts();
             const product = products.find((prod) => prod.id === idProduct);
-            if (product) {
+            if (product !== undefined) {
                 const productsnew = products.filter(
                     (prod) => prod.id !== idProduct
                 );
@@ -150,10 +162,10 @@ export default class ProductManager {
                     JSON.stringify(productsnew, null, "\t")
                 );
             } else {
-                console.log("Not found");
+                throw new Error("Product Not found");
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 }

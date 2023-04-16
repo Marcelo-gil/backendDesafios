@@ -5,90 +5,21 @@ export default class CartManager {
         this.path = path;
     }
 
-    /**
-     * Valida los campos de un Carrito
-     * @param {*} cart  Objeto del carrito
-     * @returns True carrito Invalido
-     */
-    invalidCart(cart) {
-        if (cart.title.trim().length === 0) {
-            console.log("Debe Ingresar Titulo");
-            return true;
-        }
-
-        if (cart.description.trim().length === 0) {
-            console.log("Debe Ingresar Descripción");
-            return true;
-        }
-
-        if (cart.thumbnail.trim().length === 0) {
-            console.log("Falta Imagen");
-            return true;
-        }
-
-        if (cart.price === 0) {
-            console.log("Debe Ingresar el Precio");
-            return true;
-        }
-        if (cart.stock === 0) {
-            console.log("Debe Ingresar el Stock");
-            return true;
-        }
-
-        if (cart.code.trim().length === 0) {
-            console.log("Falta Codigo");
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Agrega un carrito
-     * @param {*} cart Objeto del carrito
-     * @returns 
-     */
-    addCarts = async (cart) => {
-        if (this.invalidCart(cart)) return;
-
-        try {
-            const carts = await this.getCarts();
-
-            if (carts.length === 0) {
-                cart.id = 1;
-            } else {
-                cart.id = carts[carts.length - 1].id + 1;
-            }
-
-            carts.push(cart);
-
-            await fs.promises.writeFile(
-                this.path,
-                JSON.stringify(carts, null, "\t")
-            );
-
-            return cart;
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     getCarts = async () => {
         try {
             if (fs.existsSync(this.path)) {
-                const cartsTxt = await fs.promises.readFile(
-                    this.path,
-                    "utf-8"
-                );
+                const cartsTxt = await fs.promises.readFile(this.path, "utf-8");
                 const carts = JSON.parse(cartsTxt);
                 return carts;
             } else {
                 return [];
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 
+   
     /**
      * Busca un Cart por Id
      * @param {*} idCart Id de un Carrito
@@ -99,37 +30,77 @@ export default class CartManager {
         const cart = carts.find((cart) => cart.id === idCart);
 
         if (!cart) {
-            return {error: "Not found"};
+            throw new Error("Not found");
         }
 
         return cart;
     };
 
     /**
-     * Actualiza un Carrito
-     * 
-     * @param {*} idCart Id de un carrito
-     * @param {*} cartUpdate carrito a Acutualizar
-     * @returns 
+     * Agrega un carrito
+     * @param {*} cart Objeto del carrito
+     * @returns
      */
-    updateCart = async (idCart, cartUpdate) => {
-        if (this.invalidCart(cartUpdate)) return;
-
+    addCarts = async (cart) => {
         try {
             const carts = await this.getCarts();
-            const cart = carts.find((cart) => cart.id === idCart);
 
+            if (carts.length === 0) {
+                cart.id = 1;
+            } else {
+                cart.id = carts[carts.length - 1].id + 1;
+            }
+            carts.push(cart);
+
+            await fs.promises.writeFile(
+                this.path,
+                JSON.stringify(carts, null, "\t")
+            );
+
+            return cart;
+        } catch (error) {
+            throw error;
+        }
+    };
+   
+   
+    /**
+     * Actualiza un Carrito
+     *
+     * @param {*} cid Id de un carrito
+     * @param {*} pid Id de Producto
+     * @returns
+     */
+    updateCart = async (cid, pid) => {
+        try {
+            const carts = await this.getCarts();
+            const cart = carts.find((cart) => cart.id === cid);
             if (cart) {
                 const indexCart = carts.indexOf(cart);
-                const updatedCart = { ...cartUpdate, id: cart.id };
+                let product = cart.products.find(
+                    (pcart) => pcart.product === pid
+                );
+                if (product) {
+                    product.quantity++;
+                } else {
+                    product = {
+                        product: pid,
+                        quantity: 1,
+                    };
+                    cart.products.push(product);
+                }
+                const updatedCart = { ...cart, id: cart.id };
                 carts[indexCart] = updatedCart;
                 await fs.promises.writeFile(
                     this.path,
                     JSON.stringify(carts, null, "\t")
                 );
+                return updatedCart;
+            } else {
+                throw new Error("Carrito Inexistente");
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 
@@ -142,18 +113,16 @@ export default class CartManager {
             const carts = await this.getCarts();
             const cart = carts.find((cart) => cart.id === idCart);
             if (cart) {
-                const cartsnew = carts.filter(
-                    (cart) => cart.id !== idCart
-                );
+                const cartsnew = carts.filter((cart) => cart.id !== idCart);
                 await fs.promises.writeFile(
                     this.path,
                     JSON.stringify(cartsnew, null, "\t")
                 );
             } else {
-                console.log("Not found");
+                throw new Error("Not found");
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     };
 }
